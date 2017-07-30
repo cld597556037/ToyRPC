@@ -10,21 +10,68 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>toy-rpc-core</module>
+        <module>toy-rpc-registry</module>
+        <module>toy-rpc-client</module>
+        <module>toy-rpc-server</module>
+        <module>toy-rpc-sample</module>
+        <module>toy-rpc-config</module>
     </modules>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <spring.version>4.3.10.RELEASE</spring.version>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-core</artifactId>
-                <version>2.8.2</version>
+                <groupId>com.dong</groupId>
+                <artifactId>toy-rpc-core</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dong</groupId>
+                <artifactId>toy-rpc-registry</artifactId>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/junit/junit -->
+
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.16</version>
+            </dependency>
+
+
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>4.12</version>
                 <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.101tec/zkclient -->
+            <dependency>
+                <groupId>com.github.adyliu</groupId>
+                <artifactId>zkclient</artifactId>
+                <version>2.1.1</version>
             </dependency>
 
         </dependencies>
