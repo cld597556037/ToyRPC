@@ -1,5 +1,6 @@
 package com.dong.rpc.client;
 
+import com.dong.rpc.client.annotation.Async;
 import com.dong.rpc.entity.RPCResponse;
 
 import java.lang.reflect.InvocationHandler;
@@ -60,11 +61,16 @@ public class RPCProxy {
                     if (toStringMethod.equals(method)) {
                         return proxyToString(proxy);
                     }
-                    RPCResponse rpcResponse = rpcClient.sendMessage(interfaceClass, method, args);
-                    if (rpcResponse.hasThrowable()){
-                        throw rpcResponse.getThrowable();
+                    if (method.isAnnotationPresent(Async.class)) {
+                        rpcClient.sendMessageAyns(interfaceClass, method, args, method.getAnnotation(Async.class).value());
+                    } else {
+                        RPCResponse rpcResponse = rpcClient.sendMessage(interfaceClass, method, args);
+                        if (rpcResponse.hasThrowable()){
+                            throw rpcResponse.getThrowable();
+                        }
+                        return rpcResponse.getResponse();
                     }
-                    return rpcResponse.getResponse();
+                    return null;
                 });
 
     }

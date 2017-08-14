@@ -20,4 +20,5 @@
     6. 全局跟踪 traceid todo
     7. 集成ProtoBuf: Protostuff todo
     8. spring xsd todo
-    9. 异步调用 method must return void
+    9. 异步调用 callback 
+        9.1 Async annotation

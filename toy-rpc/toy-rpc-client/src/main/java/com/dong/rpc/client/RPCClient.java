@@ -13,7 +13,10 @@ import java.util.Calendar;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -23,6 +26,10 @@ import java.util.concurrent.atomic.AtomicLong;
 public class RPCClient {
 
     private static Logger logger = Logger.getLogger(RPCClient.class);
+
+    private static int nThreads = Runtime.getRuntime().availableProcessors() * 2;
+
+    private static ExecutorService handlerPool = Executors.newFixedThreadPool(nThreads);
 
     private AtomicLong atomicLong = new AtomicLong();
 
@@ -64,7 +71,7 @@ public class RPCClient {
             BlockingQueue<RPCResponse> blockingQueue = new ArrayBlockingQueue<>(1);
             RPCMapHelper.queueMap.put(rpcRequest.getRequestId(), blockingQueue);
             channel.writeAndFlush(rpcRequest);
-            rpcResponse = blockingQueue.poll(10 * 1000, TimeUnit.MILLISECONDS);
+            rpcResponse = blockingQueue.poll(5 * 1000, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (Exception e){
@@ -81,8 +88,49 @@ public class RPCClient {
 
             RPCMapHelper.queueMap.remove(rpcRequest.getRequestId());
         }
+        if (rpcResponse == null) {
+            throw new TimeoutException();
+        }
         logger.info("RPC调用返回：" + rpcResponse);
         return  rpcResponse;
+    }
+
+    //异步处理
+    public void sendMessageAyns(Class<?> clazz, Method method, Object[] args, Class<?> listenerClass) throws Exception {
+        handlerPool.submit(new Runnable() {
+            @Override
+            public void run() {
+                RPCResponse rpcResponse = null;
+                Listener listener = null;
+                if (listenerClass != null && Listener.class.isAssignableFrom(listenerClass)) {
+                    try {
+                        listener = (Listener)listenerClass.newInstance();
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+                try {
+                    rpcResponse = sendMessage(clazz, method, args);
+                } catch (TimeoutException te) {
+                    if (listener != null) {
+                        logger.info("async send message timeout");
+                        listener.onTimeout();
+                    }
+                } catch (Exception e) {
+                    logger.info("async send message error:" + e);
+                }
+                if (rpcResponse.hasThrowable()) {
+                    logger.info("async send message exception:" + rpcResponse.getRequestId());
+                    listener.onException(rpcResponse.getThrowable());
+                } else {
+                    logger.info("async send message succeed:" + rpcResponse.getRequestId());
+                    listener.onComplete();
+                }
+            }
+        });
+
     }
 
     private RPCRequest getRequest(Class<?> clazz, Method method, Object[] args) {

@@ -52,7 +52,6 @@ public class RPCClientTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Test
@@ -98,4 +97,19 @@ public class RPCClientTest {
         }
     }
 
+
+    @Test
+    public void clientAsyncTest() {
+        HelloService helloService  = rpcProxy.create(HelloService.class);
+        try {
+            helloService.async("dong");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

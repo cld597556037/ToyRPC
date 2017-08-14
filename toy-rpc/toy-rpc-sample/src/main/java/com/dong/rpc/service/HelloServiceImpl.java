@@ -1,6 +1,7 @@
 package com.dong.rpc.service;
 
 import com.dong.rpc.annotation.RPCService;
+import com.dong.rpc.client.annotation.Async;
 import com.dong.rpc.exception.HelloException;
 
 /**
@@ -16,5 +17,14 @@ public class HelloServiceImpl implements HelloService {
             throw new HelloException("hello");
         }
         return "hello, " + name;
+    }
+
+    @Override
+    public void async(String name) {
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
