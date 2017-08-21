@@ -2,7 +2,7 @@ package com.dong.rpc.client;
 
 
 import com.dong.rpc.exception.HelloException;
-import com.dong.rpc.service.HelloService;
+import com.dong.rpc.service.hello.HelloService;
 
 /**
  * @author caolidong

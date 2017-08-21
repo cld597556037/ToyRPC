@@ -4,6 +4,8 @@ import com.dong.rpc.channel.ChannelWrapper;
 import com.dong.rpc.entity.RPCRequest;
 import com.dong.rpc.entity.RPCResponse;
 import com.dong.rpc.registry.ServiceDiscovery;
+import com.dong.rpc.trace.RPCHolder;
+import com.dong.rpc.trace.RPCTrace;
 import com.dong.rpc.util.RPCMapHelper;
 import io.netty.channel.Channel;
 import org.apache.log4j.Logger;
@@ -42,6 +44,14 @@ public class RPCClient {
     }
 
     public RPCResponse sendMessage(Class<?> clazz, Method method, Object[] args) throws Exception {
+        if (!RPCHolder.hasTrace()) {
+            //第一层调用初始化跟踪信息
+            RPCHolder.init();
+        } else {
+            RPCTrace trace = RPCHolder.getTrace();
+            trace.setRequestTime(Calendar.getInstance().getTime());
+            trace.setSeq(trace.getSeq() + 1);
+        }
         RPCResponse rpcResponse = null;
         RPCRequest rpcRequest = getRequest(clazz, method, args);
 
@@ -88,6 +98,11 @@ public class RPCClient {
 
             RPCMapHelper.queueMap.remove(rpcRequest.getRequestId());
         }
+        RPCHolder.getTrace().setResponseTime(Calendar.getInstance().getTime());
+        if (RPCHolder.getTrace().getSeq() == 1) {
+            //链式调用请求发起者 清楚本次跟踪信息
+            RPCHolder.remove();
+        }
         if (rpcResponse == null) {
             throw new TimeoutException();
         }
@@ -97,9 +112,7 @@ public class RPCClient {
 
     //异步处理
     public void sendMessageAyns(Class<?> clazz, Method method, Object[] args, Class<?> listenerClass) throws Exception {
-        handlerPool.submit(new Runnable() {
-            @Override
-            public void run() {
+        handlerPool.submit(() -> {
                 RPCResponse rpcResponse = null;
                 Listener listener = null;
                 if (listenerClass != null && Listener.class.isAssignableFrom(listenerClass)) {
@@ -128,8 +141,7 @@ public class RPCClient {
                     logger.info("async send message succeed:" + rpcResponse.getRequestId());
                     listener.onComplete();
                 }
-            }
-        });
+            });
 
     }
 
@@ -141,6 +153,7 @@ public class RPCClient {
         rpcRequest.setParams(args);
         rpcRequest.setParamTypes(method.getParameterTypes());
         rpcRequest.setRequestTime(Calendar.getInstance().getTime().getTime());
+        rpcRequest.setTrace(RPCHolder.getTrace());
         return rpcRequest;
     }
 

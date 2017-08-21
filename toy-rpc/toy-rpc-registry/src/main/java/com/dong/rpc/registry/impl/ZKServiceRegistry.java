@@ -2,11 +2,8 @@ package com.dong.rpc.registry.impl;
 
 import com.dong.rpc.registry.ServiceRegistry;
 import com.dong.rpc.util.Constant;
-import com.dong.rpc.util.ZookeeperUtil;
 import com.github.zkclient.ZkClient;
-import com.sun.tools.internal.jxc.ap.Const;
 import org.apache.log4j.Logger;
-import org.apache.zookeeper.*;
 
 import java.util.concurrent.CountDownLatch;
 

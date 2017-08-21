@@ -1,8 +1,6 @@
 package com.dong.rpc.server;
 
 import com.dong.rpc.registry.ServiceRegistry;
-import com.dong.rpc.service.HelloService;
-import com.dong.rpc.service.HelloServiceImpl;
 
 import java.util.Map;
 

@@ -54,21 +54,20 @@ public class RPCProxy {
                 (proxy, method, args) -> {
                     if (hashCodeMethod.equals(method)) {
                         return proxyHashCode(proxy);
-                    }
-                    if (equalsMethod.equals(method)) {
+                    } else if (equalsMethod.equals(method)) {
                         return proxyEquals(proxy, args[0]);
-                    }
-                    if (toStringMethod.equals(method)) {
+                    } else if (toStringMethod.equals(method)) {
                         return proxyToString(proxy);
-                    }
-                    if (method.isAnnotationPresent(Async.class)) {
-                        rpcClient.sendMessageAyns(interfaceClass, method, args, method.getAnnotation(Async.class).value());
                     } else {
-                        RPCResponse rpcResponse = rpcClient.sendMessage(interfaceClass, method, args);
-                        if (rpcResponse.hasThrowable()){
-                            throw rpcResponse.getThrowable();
+                        if (method.isAnnotationPresent(Async.class)) {
+                            rpcClient.sendMessageAyns(interfaceClass, method, args, method.getAnnotation(Async.class).value());
+                        } else {
+                            RPCResponse rpcResponse = rpcClient.sendMessage(interfaceClass, method, args);
+                            if (rpcResponse.hasThrowable()){
+                                throw rpcResponse.getThrowable();
+                            }
+                            return rpcResponse.getResponse();
                         }
-                        return rpcResponse.getResponse();
                     }
                     return null;
                 });

@@ -3,8 +3,8 @@ package com.dong.rpc.server;
 import com.dong.rpc.registry.ServiceRegistry;
 import com.dong.rpc.registry.impl.LocalServiceRegistry;
 import org.junit.Test;
-import com.dong.rpc.service.HelloService;
-import com.dong.rpc.service.HelloServiceImpl;
+import com.dong.rpc.service.hello.HelloService;
+import com.dong.rpc.service.hello.HelloServiceImpl;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,7 +21,7 @@ import java.util.concurrent.*;
  * @date 17/6/29.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:application-test-server.xml"})
+@ContextConfiguration(locations = {"classpath:application-test-server-hello.xml"})
 public class RPCServerTest {
 
     @Autowired

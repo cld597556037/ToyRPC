@@ -1,10 +1,9 @@
 package com.dong.rpc.client;
 
 import com.dong.rpc.registry.ServiceDiscovery;
-import com.dong.rpc.registry.impl.LocalServiceDiscovery;
 import org.junit.Before;
 import org.junit.Test;
-import com.dong.rpc.service.HelloService;
+import com.dong.rpc.service.hello.HelloService;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,30 +20,14 @@ import static org.junit.Assert.assertEquals;
  * @date 17/6/29.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:application-test-client.xml"})
+@ContextConfiguration(locations = {"classpath:application-test-client-hello.xml"})
 public class RPCClientTest {
 
-    private RPCProxy rpcProxy;
-
-    private RPCClient rpcClient;
-
     @Autowired
-    private ServiceDiscovery zkServiceDiscovery;
-
-    @Before
-    public void init() {
-//        ServiceDiscovery serviceDiscovery = new LocalServiceDiscovery();
-        rpcClient = new RPCClient(zkServiceDiscovery);
-        rpcProxy = new RPCProxy(rpcClient);
-    }
-
-    public void destroy() {
-        rpcClient.close();
-    }
+    private HelloService helloService;
 
     @Test
     public void clientNormalTest() {
-        HelloService helloService  = rpcProxy.create(HelloService.class);
         try {
             String hello = helloService.hello("dong");
             assertEquals(hello, "hello, dong");
@@ -56,7 +39,6 @@ public class RPCClientTest {
 
     @Test
     public void clientExceptionTest() {
-        HelloService helloService  = rpcProxy.create(HelloService.class);
         try {
             helloService.hello("exception");
             assert false;
@@ -68,7 +50,6 @@ public class RPCClientTest {
 
     @Test
     public void clientLoopTest() {
-        HelloService helloService  = rpcProxy.create(HelloService.class);
         try {
             for (int i = 0; i < 10; i++) {
                 String hello = helloService.hello("dong" + i);
@@ -82,8 +63,6 @@ public class RPCClientTest {
 
     @Test
     public void clientParallelTest() {
-        HelloService helloService  = rpcProxy.create(HelloService.class);
-
         Executor executor = Executors.newFixedThreadPool(10);
         try {
             for (int i = 0; i < 10; i++) {
@@ -100,7 +79,6 @@ public class RPCClientTest {
 
     @Test
     public void clientAsyncTest() {
-        HelloService helloService  = rpcProxy.create(HelloService.class);
         try {
             helloService.async("dong");
         } catch (Exception e) {

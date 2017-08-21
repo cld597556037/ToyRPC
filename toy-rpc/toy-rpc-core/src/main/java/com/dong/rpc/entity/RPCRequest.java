@@ -1,5 +1,7 @@
 package com.dong.rpc.entity;
 
+import com.dong.rpc.trace.RPCTrace;
+
 import java.util.Arrays;
 
 /**
@@ -38,6 +40,12 @@ public class RPCRequest {
      * 方法参数
      */
     private Object[] params;
+
+    /**
+     * trace信息
+     * @return
+     */
+    private RPCTrace trace;
 
     public Long getRequestId() {
         return requestId;
@@ -87,6 +95,14 @@ public class RPCRequest {
         this.params = params;
     }
 
+    public RPCTrace getTrace() {
+        return trace;
+    }
+
+    public void setTrace(RPCTrace trace) {
+        this.trace = trace;
+    }
+
     @Override
     public String toString() {
         return "RPCRequest [" +
@@ -96,6 +112,7 @@ public class RPCRequest {
                 ", method='" + method + '\'' +
                 ", paramTypes=" + Arrays.toString(paramTypes) +
                 ", params=" + Arrays.toString(params) +
+                ", trace=" + trace +
                 "]";
     }
 }

@@ -17,7 +17,7 @@
     5. Annotation
         5.1 RPCService
         5.2 version todo
-    6. 全局跟踪 traceid todo
+    6. 全局跟踪 traceid
     7. 集成ProtoBuf: Protostuff todo
     8. spring xsd todo
     9. 异步调用 callback 

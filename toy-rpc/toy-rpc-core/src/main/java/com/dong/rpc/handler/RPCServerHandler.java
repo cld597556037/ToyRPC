@@ -2,6 +2,8 @@ package com.dong.rpc.handler;
 
 import com.dong.rpc.entity.RPCRequest;
 import com.dong.rpc.entity.RPCResponse;
+import com.dong.rpc.trace.RPCHolder;
+import com.dong.rpc.trace.RPCTrace;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.apache.log4j.Logger;
@@ -31,6 +33,13 @@ public class RPCServerHandler extends SimpleChannelInboundHandler<RPCRequest> {
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, RPCRequest rpcRequest) throws Exception {
         logger.info("server recieve request: " + rpcRequest);
+
+        //当前的seq为父级调用 id<<1
+        RPCTrace trace = rpcRequest.getTrace();
+        trace.setParentId(trace.getSeq());
+        trace.setSeq(trace.getSeq() * 10);
+        RPCHolder.setTrace(trace);
+
         long requestId = rpcRequest.getRequestId();
 
         String methodName = rpcRequest.getMethod();
@@ -49,6 +58,7 @@ public class RPCServerHandler extends SimpleChannelInboundHandler<RPCRequest> {
         }
         logger.info("server send response: " + rpcResponse);
         channelHandlerContext.channel().writeAndFlush(rpcResponse);
+        RPCHolder.remove();
     }
 
     public void channelActive(ChannelHandlerContext ctx) {
@@ -57,7 +67,7 @@ public class RPCServerHandler extends SimpleChannelInboundHandler<RPCRequest> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.error("exception caught" +cause);
+        logger.error("exception caught" + cause);
         ctx.channel().close();
     }
 }

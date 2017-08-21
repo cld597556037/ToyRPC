@@ -2,10 +2,7 @@ package com.dong.rpc.registry.impl;
 
 import com.dong.rpc.channel.ChannelWrapper;
 import com.dong.rpc.registry.ServiceDiscovery;
-import com.sun.deploy.util.ArrayUtil;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
