@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 /**
  * RPC请求
+ *
  * @author caolidong
  * @date 17/6/25.
  */
@@ -14,7 +15,7 @@ public class RPCRequest {
     /**
      * 请求id
      */
-    private Long requestId;
+    private String requestId;
 
     /**
      * 请求时间
@@ -22,7 +23,7 @@ public class RPCRequest {
     private Long requestTime;
 
     /**
-     *  调用类名
+     * 调用类名
      */
     private Class<?> clazz;
 
@@ -43,15 +44,16 @@ public class RPCRequest {
 
     /**
      * trace信息
+     *
      * @return
      */
     private RPCTrace trace;
 
-    public Long getRequestId() {
+    public String getRequestId() {
         return requestId;
     }
 
-    public void setRequestId(Long requestId) {
+    public void setRequestId(String requestId) {
         this.requestId = requestId;
     }
 

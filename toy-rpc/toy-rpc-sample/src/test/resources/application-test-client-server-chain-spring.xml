@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:toy-rpc="http://www.dong.com/schema/toy-rpc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.dong.com/schema/toy-rpc
+        http://www.dong.com/schema/toy-rpc/toy-rpc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>application-test.properties</value>
+        </property>
+    </bean>
+
+    <toy-rpc:protocol id="protocol"/>
+
+    <!--helloservice provider-->
+    <toy-rpc:registry id="registry" url="zk://${zk.server}"/>
+
+    <toy-rpc:server id="server" port="11366"/>
+
+    <bean id="helloService" class="com.dong.rpc.service.hello.HelloServiceImpl"/>
+
+    <toy-rpc:provider id="nameProvider" interface="com.dong.rpc.service.hello.HelloService" reference="helloService"/>
+
+    <!--nameservice consumer-->
+    <toy-rpc:discovery id="discovery" url="zk://${zk.server}"/>
+
+    <toy-rpc:consumer id="nameService" interface="com.dong.rpc.service.name.NameService"/>
+
+    <context:component-scan base-package="com.dong.rpc.service"/>
+
+</beans>

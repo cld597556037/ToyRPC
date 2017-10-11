@@ -2,6 +2,7 @@ package com.dong.rpc.entity;
 
 /**
  * RPC响应
+ *
  * @author caolidong
  * @date 17/6/25.
  */
@@ -10,7 +11,7 @@ public class RPCResponse {
     /**
      *
      */
-    private long requestId;
+    private String requestId;
 
     /**
      *
@@ -22,11 +23,11 @@ public class RPCResponse {
      */
     private Throwable throwable;
 
-    public long getRequestId() {
+    public String getRequestId() {
         return requestId;
     }
 
-    public void setRequestId(long requestId) {
+    public void setRequestId(String requestId) {
         this.requestId = requestId;
     }
 

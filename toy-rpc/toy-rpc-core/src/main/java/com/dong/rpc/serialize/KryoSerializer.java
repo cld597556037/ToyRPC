@@ -1,18 +1,16 @@
 package com.dong.rpc.serialize;
 
 import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.factories.SerializerFactory;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.esotericsoftware.kryo.serializers.FieldSerializer;
 import org.objenesis.strategy.StdInstantiatorStrategy;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 /**
  * 基于Kryo的序列化实现类
+ *
  * @author caolidong
  * @date 17/6/25.
  */
@@ -30,7 +28,7 @@ public class KryoSerializer implements Serializer {
         kryo.setInstantiatorStrategy(strategy);
     }
 
-    public byte[] serialize(Object obj) {
+    public <T> byte[] serialize(T obj) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         Output output = new Output(byteArrayOutputStream);
         kryo.writeClassAndObject(output, obj);
