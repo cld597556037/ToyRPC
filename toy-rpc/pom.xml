@@ -11,10 +11,9 @@
     <modules>
         <module>toy-rpc-core</module>
         <module>toy-rpc-registry</module>
-        <module>toy-rpc-client</module>
-        <module>toy-rpc-server</module>
         <module>toy-rpc-sample</module>
         <module>toy-rpc-config</module>
+        <module>toy-rpc-transport</module>
     </modules>
 
     <properties>

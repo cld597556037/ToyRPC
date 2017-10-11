@@ -1,5 +1,6 @@
 package com.dong.rpc.registry;
 
+import com.dong.rpc.rpc.ServiceDiscovery;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +8,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
-
-import static org.junit.Assert.assertNotNull;
 
 /**
  * @author caolidong
@@ -19,7 +18,7 @@ import static org.junit.Assert.assertNotNull;
 public class ZKServiceDiscoveryTest {
 
     @Autowired
-    private  ServiceDiscovery serviceDiscovery;
+    private ServiceDiscovery serviceDiscovery;
 
     @Test
     public void testDiscover() throws InterruptedException {

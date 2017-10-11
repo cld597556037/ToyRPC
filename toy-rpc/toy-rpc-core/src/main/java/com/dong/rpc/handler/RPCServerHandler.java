@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author caolidong
@@ -32,15 +33,15 @@ public class RPCServerHandler extends SimpleChannelInboundHandler<RPCRequest> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, RPCRequest rpcRequest) throws Exception {
-        logger.info("server recieve request: " + rpcRequest);
+        logger.debug("server recieve request: " + rpcRequest);
 
-        //当前的seq为父级调用 id<<1
+        //当前的span为父级调用
         RPCTrace trace = rpcRequest.getTrace();
-        trace.setParentId(trace.getSeq());
-        trace.setSeq(trace.getSeq() * 10);
+        trace.setParentSpan(trace.getSpan());
+        trace.setSpan(UUID.randomUUID().toString());
         RPCHolder.setTrace(trace);
 
-        long requestId = rpcRequest.getRequestId();
+        String requestId = rpcRequest.getRequestId();
 
         String methodName = rpcRequest.getMethod();
         Object[] params = rpcRequest.getParams();
@@ -56,13 +57,13 @@ public class RPCServerHandler extends SimpleChannelInboundHandler<RPCRequest> {
         } catch (InvocationTargetException e) {
             rpcResponse.setThrowable(e.getTargetException());
         }
-        logger.info("server send response: " + rpcResponse);
+        logger.debug("server send response: " + rpcResponse);
         channelHandlerContext.channel().writeAndFlush(rpcResponse);
         RPCHolder.remove();
     }
 
     public void channelActive(ChannelHandlerContext ctx) {
-        logger.info("channel active from: " + ctx.channel().remoteAddress());
+        logger.debug("channel active from: " + ctx.channel().remoteAddress());
     }
 
     @Override

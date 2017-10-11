@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:toy-rpc="http://www.dong.com/schema/toy-rpc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.dong.com/schema/toy-rpc
+        http://www.dong.com/schema/toy-rpc/toy-rpc.xsd">
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>application-test.properties</value>
+        </property>
+    </bean>
+
+
+    <toy-rpc:registry id="registry" url="zk://${zk.server}"/>
+
+    <toy-rpc:server id="server" port="11367"/>
+
+    <bean id="nameService" class="com.dong.rpc.service.name.NameServiceImpl"/>
+
+    <toy-rpc:provider id="nameProvider" interface="com.dong.rpc.service.name.NameService" reference="nameService"/>
+
+</beans>

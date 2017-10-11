@@ -1,5 +1,6 @@
 package com.dong.rpc.registry;
 
+import com.dong.rpc.rpc.ServiceRegistry;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

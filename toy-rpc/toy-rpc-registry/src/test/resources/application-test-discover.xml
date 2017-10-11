@@ -4,10 +4,5 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean class="com.dong.rpc.registry.impl.ZKServiceDiscovery">
         <constructor-arg index="0" value="121.43.104.34:2181"/>
-        <constructor-arg index="1">
-            <list>
-                <value type="java.lang.String" >helloService</value>
-            </list>
-        </constructor-arg>
     </bean>
 </beans>
