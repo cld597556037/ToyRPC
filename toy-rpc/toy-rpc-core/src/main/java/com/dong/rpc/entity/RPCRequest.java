@@ -14,7 +14,7 @@ public class RPCRequest {
     /**
      * 请求id
      */
-    private Long requestId;
+    private String requestId;
 
     /**
      * 请求时间
@@ -47,11 +47,11 @@ public class RPCRequest {
      */
     private RPCTrace trace;
 
-    public Long getRequestId() {
+    public String getRequestId() {
         return requestId;
     }
 
-    public void setRequestId(Long requestId) {
+    public void setRequestId(String requestId) {
         this.requestId = requestId;
     }
 

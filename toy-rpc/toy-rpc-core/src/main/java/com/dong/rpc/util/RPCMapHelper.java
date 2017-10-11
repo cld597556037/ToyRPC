@@ -16,5 +16,5 @@ public class RPCMapHelper {
     /**
      * 方便根据requestId查询对应的rpcResponse
      */
-    public static Map<Long, BlockingQueue<RPCResponse>> queueMap = new ConcurrentHashMap<>();
+    public static Map<String, BlockingQueue<RPCResponse>> queueMap = new ConcurrentHashMap<>();
 }

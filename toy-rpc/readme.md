@@ -1,24 +1,23 @@
-    toy-rpc，just for fun！
+toy-rpc，just for fun！
     
-    开发进程:
-    1. RPC基础功能
-        1.1 基于netty编解码
-        1.2 基于kryo序列化
-        1.3 单服务、单链接 client-server
-    2. 项目结构调整，模块细分
-    3. Client端Channel复用
-        3.1 对象池
-        3.2 多连接
-    4 注册发现模块优化
-        4.1 local用于测试
-        4.2 Zookepper 服务治理
-        4.3 多服务
-        4.4 负载均衡 todo
-    5. Annotation
-        5.1 RPCService
-        5.2 version todo
-    6. 全局跟踪 traceid
-    7. 集成ProtoBuf: Protostuff todo
-    8. spring xsd todo
-    9. 异步调用 callback 
-        9.1 Async annotation
+    
+    1 SPI机制，将接口和实现解耦，定制化、配置化
+    2 基于Kyro的Serializer
+    3 基于Netty的transport
+    4 基于Apache.commons的Channel Pools 
+    5 基于Zookeeper的registry
+    6 SpringSupport
+     
+    TODO:
+    
+        1 Protocol
+            1.1 loadbalance
+            1.2 haStrategy
+        2 future
+        3 泛化调用
+        4 StandAlone Container
+        5 Zipkin, 接入分布式调用追踪系统
+        
+    参考：
+        阿里 Dubbo
+        新浪 Motan

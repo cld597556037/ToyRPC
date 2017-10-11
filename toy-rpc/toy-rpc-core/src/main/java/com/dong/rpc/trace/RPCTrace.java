@@ -15,17 +15,17 @@ public class RPCTrace implements Serializable {
     /**
      * 全局唯一跟踪id
      */
-    private Long traceId;
+    private String traceId;
 
     /**
      * 父调用seqId
      */
-    private Long parentId;
+    private String parentSpan;
 
     /**
      * 当前调用序列
      */
-    private Long seq;
+    private String span;
 
     /**
      * 请求时间
@@ -37,28 +37,28 @@ public class RPCTrace implements Serializable {
      */
     private Date responseTime;
 
-    public Long getTraceId() {
+    public String getTraceId() {
         return traceId;
     }
 
-    public void setTraceId(Long traceId) {
+    public void setTraceId(String traceId) {
         this.traceId = traceId;
     }
 
-    public Long getParentId() {
-        return parentId;
+    public String getParentSpan() {
+        return parentSpan;
     }
 
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
+    public void setParentSpan(String parentSpan) {
+        this.parentSpan = parentSpan;
     }
 
-    public Long getSeq() {
-        return seq;
+    public String getSpan() {
+        return span;
     }
 
-    public void setSeq(Long seq) {
-        this.seq = seq;
+    public void setSpan(String span) {
+        this.span = span;
     }
 
     public Date getRequestTime() {
@@ -81,8 +81,8 @@ public class RPCTrace implements Serializable {
     public String toString() {
         return "RPCTrace [" +
                 "traceId=" + traceId +
-                ", parentId=" + parentId +
-                ", seq=" + seq +
+                ", parentSpan=" + parentSpan +
+                ", span=" + span +
                 ", requestTime=" + requestTime +
                 ", responseTime=" + responseTime +
                 "]";

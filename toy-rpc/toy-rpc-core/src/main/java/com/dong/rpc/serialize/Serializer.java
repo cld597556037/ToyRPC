@@ -12,7 +12,7 @@ public interface Serializer {
      * @param obj
      * @return
      */
-     byte[] serialize(Object obj);
+    <T> byte[] serialize(T obj);
 
     /**
      * 将字节数组反序列化为Java对象
@@ -21,5 +21,4 @@ public interface Serializer {
      * @return
      */
      <T>T deserialize(byte[] bytes);
-
 }

@@ -1,6 +1,7 @@
 package com.dong.rpc.registry.impl;
 
-import com.dong.rpc.registry.ServiceRegistry;
+import com.dong.rpc.extension.SpiMeta;
+import com.dong.rpc.rpc.ServiceRegistry;
 import com.dong.rpc.util.Constant;
 import com.github.zkclient.ZkClient;
 import org.apache.log4j.Logger;
@@ -12,6 +13,7 @@ import java.util.concurrent.CountDownLatch;
  * @author caolidong
  * @date 17/6/26.
  */
+@SpiMeta(name = "zk")
 public class ZKServiceRegistry implements ServiceRegistry {
     private static final Logger LOGGER = Logger.getLogger(ZKServiceRegistry.class);
 
@@ -20,11 +22,6 @@ public class ZKServiceRegistry implements ServiceRegistry {
     private String registryAddress;
 
     private ZkClient zkClient;
-
-    public ZKServiceRegistry(String registryAddress) {
-        this.registryAddress = registryAddress;
-        zkClient = new ZkClient(registryAddress);
-    }
 
     /**
      * 此处加同步只是为了测试方便
@@ -51,4 +48,14 @@ public class ZKServiceRegistry implements ServiceRegistry {
         LOGGER.info("register address info :" + addressPath);
     }
 
+    @Override
+    public void open(String registryAddress) {
+        this.registryAddress = registryAddress;
+        zkClient = new ZkClient(registryAddress);
+    }
+
+    @Override
+    public void close() {
+        zkClient.close();
+    }
 }
