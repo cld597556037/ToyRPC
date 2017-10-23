@@ -37,8 +37,6 @@ public class NettyServer implements Channel {
 
     private MessageHandler messageHandler;
 
-    private volatile boolean init;
-
     public NettyServer(int port, MessageHandler messageHandler) {
         this.port = port;
         this.messageHandler = messageHandler;
@@ -50,10 +48,7 @@ public class NettyServer implements Channel {
     }
 
     @Override
-    public synchronized void open() {
-        if (init) {
-            return;
-        }
+    public void open() {
         logger.info("RPC Server start at " + getLocalIp() + ":" + port);
         ServerBootstrap serverBootstrap = new ServerBootstrap();
         serverBootstrap.group(bossGroup, workerGroup)
@@ -62,7 +57,7 @@ public class NettyServer implements Channel {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         socketChannel.pipeline().addLast("decoder",
-                                new NettyDecoder(10 * 1024 * 1024, 1, 4, 0, 0))
+                                new NettyDecoder(10 * 1024 * 1024, 1 , 4, 0,0  ))
                                 .addLast("encoder", new NettyEncoder())
                                 .addLast(new NettyChannelHandler(NettyServer.this, messageHandler));
                     }
@@ -72,12 +67,10 @@ public class NettyServer implements Channel {
         try {
             ChannelFuture future = serverBootstrap.bind(port).sync();
             //注册服务
-            future.channel().closeFuture().addListener(closeFuture -> {
-                    logger.info(String.format("close netty server on: %s", getLocalIp() + ":" + port));
-            });
-            init = true;
+//            future.channel().closeFuture().sync();
         } catch (Exception e) {
             logger.error("server启动 异常", e);
+
         }
     }
 

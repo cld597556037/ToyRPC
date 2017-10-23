@@ -67,6 +67,7 @@ public class ConsumerConfig<T> {
     private void init() {
         logger.info("refer consumer:" + this);
         Class<T> clazz = null;
+        Cluster<T> cluster = null;
         InvocationHandler invocationHandler = null;
         ProxyFactory proxyFactory = null;
         try {

@@ -69,5 +69,4 @@ public class ToyRpcBeanDefinitionParser implements BeanDefinitionParser {
         return beanDefinition;
     }
 
-
 }

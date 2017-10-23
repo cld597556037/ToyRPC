@@ -32,6 +32,8 @@ public class ConfigServerTest {
         return providerConfig;
     }
 
+    //112.74.16.162
+    //121.43.104.34
     @Test
     public void testServerConfig() {
         ProviderConfig providerConfig = getProviderConfig("zk://121.43.104.34:2181", 11367,

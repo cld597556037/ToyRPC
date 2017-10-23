@@ -16,7 +16,8 @@ toy-rpc，just for fun！
         - StandAlone Container
         - Benchmark
         - Zipkin
+        - 熔断
         
     参考：
-        阿里 Dubbo
-        新浪 Motan
+        阿里 [Dubbo](https://github.com/alibaba/dubbo)
+        新浪 [Motan](https://github.com/weibocom/motan)

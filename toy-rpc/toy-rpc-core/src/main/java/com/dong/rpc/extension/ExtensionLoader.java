@@ -79,7 +79,6 @@ public class ExtensionLoader<T> {
             init();
         }
 
-
         Spi spi = type.getAnnotation(Spi.class);
 
         Class<T> clazz = classes.get(name);

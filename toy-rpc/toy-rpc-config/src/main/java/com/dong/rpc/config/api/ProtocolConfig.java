@@ -48,7 +48,6 @@ public class ProtocolConfig {
 
     public Protocol getProtocol() {
         if (protocol == null) {
-
             try {
                 protocol = ExtensionLoader.getExtensionLoader(Protocol.class).getExtension(name);
             } catch (ToyException e) {
@@ -67,5 +66,4 @@ public class ProtocolConfig {
     public void setProtocol(Protocol protocol) {
         this.protocol = protocol;
     }
-
 }
